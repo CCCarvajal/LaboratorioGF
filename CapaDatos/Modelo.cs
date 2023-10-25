@@ -115,7 +115,7 @@ namespace CapaDatos
             //validados que sea una cantidad válida
             if (TecnicoElemento.Cantidad < 1 || TecnicoElemento.Cantidad > 10)
             {
-                return "La cantidad no es válidad";
+                return "La cantidad no es válida!";
             }
 
             //Verifica si ya existe una relación para el técnico y el elemento especificados
@@ -268,7 +268,7 @@ namespace CapaDatos
                     // Guarda los cambios en la base de datos
                     datos.SaveChanges();
 
-                    return "Ok.";
+                    return "Ok";
                 }
                 else
                 {

@@ -5,89 +5,126 @@
 <h1>@ViewData["Title"]</h1>
 
 
-<div>
-    <!-- Agrega un contenedor para el spinner -->
-    <div id="spinner" class="spinner-container">
-        <div class="spinner"></div>
-    </div>
 
-    <div class="form-group row">
-        <div class="col-sm-10">
-            <label class="form-label">Codigo técnico</label>
-            <input type="text" required class="form-control" id="Codigo" placeholder="Código">
-        </div>
-        <div class="col-sm-10">
-            <label class="form-label">Nombre técnico</label>
-            <input type="text" required class="form-control" id="Nombre" placeholder="Nombre">
-        </div>
-        <div class="col-sm-10">
-            <label class="form-label">Sueldo base técnico</label>
-            <input type="number" required class="form-control" id="SueldoBase" placeholder="Sueldo Base">
-        </div>
-        <div class="col-sm-10">
-            <select id="CodigoSucursal" required class="form-control">
-            </select>
-        </div>
-        <div>
-            <button onclick="ActualizarTecnico()">Guardar Cambios</button>
-        </div>
-    </div>
-    <div class="form-group row">
-        <div>
-            Elementos
-        </div>
-        <table id="miTabla" class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Nombre</th>
-                    <th>Cantidad</th>
-                </tr>
-            </thead>
-            <tbody id="CuerpoTabla">
-            </tbody>
-        </table>
-    </div>
+<!-- Agrega un contenedor para el spinner -->
+<div id="spinner" class="spinner-container">
+    <div class="spinner"></div>
 </div>
-
-<div class="accordion" id="accordionExample">
+<div class="accordion" id="accordionTecnico">
     <div class="accordion-item">
         <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Añadir Elemento
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Técnico
             </button>
         </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+        <div id="collapseOne" class="accordion-collapse collapse " data-bs-parent="#accordionTecnico">
             <div class="accordion-body">
                 <div class="form-group row">
-                    <div class="col-sm-10 visually-hidden">
+                    <div class="col-sm-6">
                         <label class="form-label">Codigo técnico</label>
-                        <select id="InputTecnico" class="form-control">
+                        <input type="text" readonly required class="form-control" id="Codigo" placeholder="Código">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Nombre técnico</label>
+                        <input type="text" required class="form-control" id="Nombre" placeholder="Nombre">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Sueldo base técnico</label>
+                        <input type="number" required class="form-control" id="SueldoBase" placeholder="Sueldo Base">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Sucursal</label>
+                        <select id="CodigoSucursal" required class="form-control">
                         </select>
                     </div>
-                    <div class="col-sm-10">
-                        <label class="form-label">Código ELementos</label>
-                        <select id="InputElementos" class="form-control">
-                        </select>
-                    </div>
-                    <div class="col-sm-10">
-                        <label class="form-label">Cantidad</label>
-                        <input type="number" class="form-control" id="InputCantidad" placeholder="Cantidad">
+                    <div class="col-sm-12 d-flex justify-content-sm-center mt-3">
+                        <button class="btn btn-success" onclick="ActualizarTecnico()">Guardar Cambios</button>
                     </div>
                 </div>
-                <div class="col-sm-10">
-                    <button onclick="AgregaElemento()">Agregar Elemento</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="accordion" id="accordionElementos">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Elementos
+            </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse " data-bs-parent="#accordionElementos">
+            <div class="accordion-body">
+                <div class="d-flex justify-content-center">
+                    <h2>Elementos</h2>
+                </div>
+                <div class="form-group row text-center">
+
+                    <table id="miTabla" class="text-center table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody id="CuerpoTabla">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Añadir Elemento
+            </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="form-group row">
+                    <div class="col-sm-10 visually-hidden">
+                        <label class="form-label">Codigo técnico</label>
+                        <input type="text" class="form-control " id="InputTecnico" placeholder="Cantidad" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Código ELementos</label>
+                        <select id="InputElementos" class="form-control">
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Cantidad</label>
+                        <input type="number" class="form-control" id="InputCantidad" placeholder="Cantidad">
+                    </div>
+                </div>
+                <div class="col-sm-12 d-flex justify-content-sm-center mt-3">
+                    <button class="btn btn-success" onclick="AgregaElemento()">Agregar Elemento</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Agrega un contenedor para el spinner -->
+<div id="spinner" class="spinner-container">
+    <div class="spinner"></div>
+</div>
 
 <script>
     var html = "";
+    function mostrarSpinner() {
+        document.getElementById('spinner').style.display = 'flex';
+    }
 
-    $(document).ready(function () {
+    // Ocultar el spinner después de que se completa la carga
+    function ocultarSpinner() {
+        document.getElementById('spinner').style.display = 'none';
+    }
+
+    $(document).ready(async function () {
+        mostrarSpinner();
         // Obtén la URL actual
         var url = new URL(window.location.href);
         var codigo = url.searchParams.get("Codigo");
@@ -103,6 +140,8 @@
 
         // Consultamos Sucursales
         consultaSucursales();
+        
+        ocultarSpinner();
     });
 
     async function consultarElementosTabla(codigo) {
@@ -122,10 +161,10 @@
         //Damos forma a los datos
         data.forEach(item => {
             html += `<tr>
-                        <td>${item.elemento.codigo}</td>
-                        <td>${item.elemento.nombre}</td>
-                        <td>${item.relacionTecnicoElemento.cantidad}</td>
-                    </tr>`;
+                                <td>${item.elemento.codigo}</td>
+                                <td>${item.elemento.nombre}</td>
+                                <td>${item.relacionTecnicoElemento.cantidad}</td>
+                            </tr>`;
         });
         console.log(html)
         $('#CuerpoTabla').html(html);
@@ -176,12 +215,16 @@
         $('#CodigoSucursal').html(html);
     }
 
+    //crea elementos
     async function AgregaElemento() {
-        var tecnico = $('#InputTecnico').val();
+        mostrarSpinner();
+        debugger;
+        var tecnico = $('#Codigo').val();
         var elementos = $('#InputElementos').val();
         var cantidad = $('#InputCantidad').val();
 
         if (cantidad == 0) {
+            ocultarSpinner();
             await Swal.fire({
                 icon: 'info',
                 title: 'Aviso',
@@ -203,7 +246,7 @@
 
         try {
             var result = await AgregarElementoBD(tecnicoElemento);
-
+            ocultarSpinner();
             if (result == "Ok") {
                 await Swal.fire({
                     icon: 'success',
@@ -224,6 +267,7 @@
                 });
             }
         } catch (error) {
+            ocultarSpinner();
             console.error(error);
             await Swal.fire({
                 icon: 'error',
@@ -236,12 +280,13 @@
     }
 
     async function AgregarElementoBD(tecnicoElemento) {
-        const response = await fetch('/Home/AgregaELementos', {
-            method: 'POST',
+        var Variables = `?Cantidad=${tecnicoElemento.Cantidad}&CodigoElemento=${tecnicoElemento.CodigoElemento}&CodigoTecnico=${tecnicoElemento.CodigoTecnico}`;
+        debugger;
+        const response = await fetch(`/Home/AgregaELementos${Variables}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(tecnicoElemento)
+            }
         });
 
         const result = await response.json();
@@ -254,13 +299,15 @@
     *
     ***********************************************************************************************************/
     async function ActualizarTecnico() {
-        
+        mostrarSpinner();
         var codigoTecnico = $('#Codigo').val();
         var nombreTecnico = $('#Nombre').val();
         var sueldoBaseTecnico = $('#SueldoBase').val();
         var codigoSucursalTecnico = $('#CodigoSucursal').val();
-        //validamos que haya cantidad
-        if (codigo == "" || nombre == "" || sueldoBase == "" || codigoSucursal == "") {
+
+        // Validamos que haya cantidad
+        if (codigoTecnico === "" || nombreTecnico === "" || sueldoBaseTecnico === "" || codigoSucursalTecnico === "") {
+            ocultarSpinner();
             const swal = await Swal.fire({
                 icon: 'info',
                 title: 'Aviso',
@@ -270,20 +317,23 @@
             });
             return;
         }
+
+        // Objeto técnico correctamente inicializado
         const tecnico = {
-            Codigo = `${codigoTecnico}`,
-            Nombre = `${nombreTecnico}`,
-            SueldoBase = `${sueldoBaseTecnico}`,
-            CodigoSucursal = `${codigoSucursalTecnico}`
+            Codigo: codigoTecnico,
+            Nombre: nombreTecnico,
+            SueldoBase: sueldoBaseTecnico,
+            CodigoSucursal: codigoSucursalTecnico
         };
 
-        //Ejecutamos servicio
+        // Ejecutamos servicio
         var result = await AgregarTecnicooBD(tecnico);
-        if (result == "Ok") {
+        ocultarSpinner();
+        if (result === "Ok") {
             const swal = await Swal.fire({
                 icon: 'success',
                 title: 'Éxito',
-                text: '¡Actualizado con exito!',
+                text: '¡Actualizado con éxito!',
                 allowOutsideClick: false,
                 confirmButtonText: 'De acuerdo'
             }).then((result) => {
@@ -291,10 +341,9 @@
                     // Redirige a la página deseada
                     window.location.href = window.location.href;
                 }
-            });;
+            });
             return;
-        }
-        else {
+        } else {
             Swal.fire('¡Error!', `${result}`, 'error');
             const swal = await Swal.fire({
                 icon: 'error',
@@ -305,15 +354,15 @@
             });
             return;
         }
-
     }
+
     /***********************************************************************************************************
     *
     * consume servicio
     *
     ***********************************************************************************************************/
-    async function gregarTecnicooBD(tecnico) {
-        var Variables = `?Codigo=${tecnico.Cantidad}&Nombre=${tecnico.Nombre}&SueldoBase=${tecnico.SueldoBase}&CodigoSucursal=${tecnico.CodigoSucursal}`;
+    async function AgregarTecnicooBD(tecnico) {
+        var Variables = `?Codigo=${tecnico.Codigo}&Nombre=${tecnico.Nombre}&SueldoBase=${tecnico.SueldoBase}&CodigoSucursal=${tecnico.CodigoSucursal}`;
         const response = await fetch(`/Home/ModificaTecnico${Variables}`, {
             method: 'GET',
             headers: {

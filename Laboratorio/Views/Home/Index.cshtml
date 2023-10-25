@@ -5,20 +5,80 @@
 <div class="text-center">
     <h1 class="display-4">Técnicos</h1>
 </div>
-<table id="miTabla" class="table table-hover">
-    <thead>
-        <tr>
-            <th>Código</th>
-            <th>Nombre</th>
-            <th>Codigo Sucursal</th>
-            <th>Elementos Asignados</th>
-            <th>Detalle</th>
-        </tr>
-    </thead>
-    <tbody id="CuerpoTabla">
-    </tbody>
-</table>
+<div class="container border-success">
+    <table id="miTabla" class="table table-hover border-success">
+        <thead class="text-center">
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Codigo Sucursal</th>
+                <th>Elementos Asignados</th>
+                <th>Detalle</th>
+            </tr>
+        </thead>
+        <tbody class="text-center" id="CuerpoTabla">
+        </tbody>
+    </table>
+</div>
+
+<div class="accordion" id="accordionTecnico">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Técnico
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse " data-bs-parent="#accordionTecnico">
+            <div class="accordion-body">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="form-label">Codigo técnico</label>
+                        <input type="text" required class="form-control" id="Codigo" placeholder="Código">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Nombre técnico</label>
+                        <input type="text" required class="form-control" id="Nombre" placeholder="Nombre">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Sueldo base técnico</label>
+                        <input type="number" required class="form-control" id="SueldoBase" placeholder="Sueldo Base">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Sucursal</label>
+                        <select id="CodigoSucursal" required class="form-control">
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Código ELementos</label>
+                        <select id="InputElementos" class="form-control">
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Cantidad</label>
+                        <input type="number" class="form-control" id="InputCantidad" placeholder="Cantidad">
+                    </div>
+                    <div class="col-sm-12 d-flex justify-content-sm-center mt-3">
+                        <button class="btn btn-success" onclick="AgregaTecnico()">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Agrega un contenedor para el spinner -->
+<div id="spinner" class="spinner-container">
+    <div class="spinner"></div>
+</div>
+
 <script>
+    function mostrarSpinner() {
+        document.getElementById('spinner').style.display = 'flex';
+    }
+
+    // Ocultar el spinner después de que se completa la carga
+    function ocultarSpinner() {
+        document.getElementById('spinner').style.display = 'none';
+    }
 
     /**********************************************************************************************************
      * 
@@ -28,11 +88,13 @@
      *  asignados
      *
      ***********************************************************************************************************/
-
-    $(document).ready(function () {
-        debugger;
-        console.log('inicio');
-        ConsultarTecnicos();
+   
+    $(document).ready(async function () {
+        mostrarSpinner();
+        await ConsultarTecnicos();
+        consultarElementos()
+        consultaSucursales()
+        ocultarSpinner();
     });
 
 
@@ -42,7 +104,7 @@
      *
      ***********************************************************************************************************/
 
-    function ConsultarTecnicos() {
+    async function ConsultarTecnicos() {
 
         window.addEventListener('load', function () {
             var url = "https://localhost:7054/Home/ConsultarTecnicoGeneral"; //Url del servicio
@@ -80,8 +142,7 @@
                         <td>${item.tecnico.nombre}</td>
                         <td>${item.tecnico.codigoSucursal}</td>
                         <td>${item.numeroDeElementos}</td>
-                        <td>
-                            <button onclick="ConsultaTecnico('${item.tecnico.codigo}')">
+                        <td><button class="btn btn-success" onclick="ConsultaTecnico('${item.tecnico.codigo}')">
                                 <i class="fa-solid fa-eye"></i>
                             </button>
                         </td>
@@ -106,4 +167,181 @@
     }
 
 
+    /**********************************************************************************************************
+     *
+     *  Consulta sucursales
+     *
+     ***********************************************************************************************************/
+    async function consultaSucursales() {
+        const response = await fetch('/Home/ConsultaSucursales', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+
+        const data = await response.json();
+
+        html = data.map(item => `<option value="${item.codigo}">${item.nombre}</option>`).join('');
+        $('#CodigoSucursal').html(html);
+    }
+
+    /***********************************************************************************************************
+    *
+    * Agrega tecnicos
+    *
+    ***********************************************************************************************************/
+    async function AgregaTecnico() {
+        mostrarSpinner();
+        var codigoTecnico = $('#Codigo').val();
+        var nombreTecnico = $('#Nombre').val();
+        var sueldoBaseTecnico = $('#SueldoBase').val();
+        var codigoSucursalTecnico = $('#CodigoSucursal').val();
+
+        var cantidad = $('#InputCantidad').val();
+
+        // Validamos que haya cantidad
+        if (codigoTecnico === "" || nombreTecnico === "" || sueldoBaseTecnico === "" || codigoSucursalTecnico === "" || cantidad === "") {
+            ocultarSpinner();
+            const swal = await Swal.fire({
+                icon: 'info',
+                title: 'Aviso',
+                text: '¡Ingrese todos los datos!',
+                allowOutsideClick: false,
+                confirmButtonText: 'De acuerdo'
+            });
+            return;
+        }
+
+        // Objeto técnico correctamente inicializado
+        const tecnico = {
+            Codigo: codigoTecnico,
+            Nombre: nombreTecnico,
+            SueldoBase: sueldoBaseTecnico,
+            CodigoSucursal: codigoSucursalTecnico
+        };
+
+        // Ejecutamos servicio
+        var result = await AgregarTecnicooBD(tecnico);
+        ocultarSpinner();
+        if (result == "Ok") {
+            
+            var resultElemento = await AgregaElemento(); //si se registra el tecnico se registra elemento
+            if (resultElemento == "Ok") {
+                const swal = await Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: '¡Registrado con éxito!',
+                    allowOutsideClick: false,
+                    confirmButtonText: 'De acuerdo'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirige a la página deseada
+                        window.location.href = window.location.href;
+                    }
+                });
+                return;
+
+            } else {
+                Swal.fire('¡Error!', `${result}`, 'error');
+                const swal = await Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: `${resultElemento}`,
+                    allowOutsideClick: false,
+                    confirmButtonText: 'De acuerdo'
+                });
+                return;
+            }
+            
+        } else {
+            Swal.fire('¡Error!', `${result}`, 'error');
+            const swal = await Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: `${result}`,
+                allowOutsideClick: false,
+                confirmButtonText: 'De acuerdo'
+            });
+            return;
+        }
+    }
+
+    async function AgregarTecnicooBD(tecnico) {
+        var Variables = `?Codigo=${tecnico.Codigo}&Nombre=${tecnico.Nombre}&SueldoBase=${tecnico.SueldoBase}&CodigoSucursal=${tecnico.CodigoSucursal}`;
+        const response = await fetch(`/Home/AgregaTecnicos${Variables}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const result = await response.json();
+
+        return result;
+    }
+    /***********************************************************************************************************
+    *
+    * consulta elementos 
+    *
+    ***********************************************************************************************************/
+    async function consultarElementos() {
+        const response = await fetch('/Home/ConsultarTodosElementos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        html = data.map(item => `<option value="${item.codigo}">${item.nombre}</option>`).join('');
+        $('#InputElementos').html(html);
+    }
+
+
+    /***********************************************************************************************************
+    *
+    * Agrega elemento obligatorio
+    *
+    ***********************************************************************************************************/
+    async function AgregaElemento() {
+        var tecnico = $('#Codigo').val();
+        var elementos = $('#InputElementos').val();
+        var cantidad = $('#InputCantidad').val();
+
+        if (cantidad == 0) {
+            return "Ingrese cantidad";
+        }
+
+        const tecnicoElemento = {
+            Id: "0",
+            CodigoTecnico: `${tecnico}`,
+            CodigoElemento: `${elementos}`,
+            Cantidad: parseInt(cantidad),
+            CodigoElementoNavigation: "",
+            CodigoTecnicoNavigation: ""
+        };
+
+        try {
+            var result = await AgregarElementoBD(tecnicoElemento);
+            return result;
+        } catch (error) {
+            return error;
+        }
+    }
+
+    async function AgregarElementoBD(tecnicoElemento) {
+        var Variables = `?Cantidad=${tecnicoElemento.Cantidad}&CodigoElemento=${tecnicoElemento.CodigoElemento}&CodigoTecnico=${tecnicoElemento.CodigoTecnico}`;
+        debugger;
+        const response = await fetch(`/Home/AgregaELementos${Variables}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const result = await response.json();
+        return result;
+    }
 </script>

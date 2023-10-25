@@ -125,14 +125,14 @@ namespace Laboratorio.Controllers
             return Json(Result);
         }
 
-        [HttpPost]
+        [HttpGet]
         public JsonResult AgregaTecnicos(Tecnico Tecnico)
         {
             string Result = new Conexion().AgregaTecnicos(Tecnico);
             return Json(Result);
         }
 
-        [HttpPost]
+        [HttpGet]
         public JsonResult ModificaTecnico(Tecnico Tecnico)
         {
             string Result = new Conexion().ModificaTecnico(Tecnico);
